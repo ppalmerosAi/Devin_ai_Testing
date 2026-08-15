@@ -12,6 +12,7 @@ import {
 import type { Theme } from '../hooks/useTheme'
 
 const COLORS = ['#0f172a', '#334155', '#64748b', '#94a3b8', '#0ea5e9', '#14b8a6', '#f59e0b', '#ef4444']
+const DARK_COLORS = ['#e2e8f0', '#94a3b8', '#64748b', '#475569', '#38bdf8', '#2dd4bf', '#fbbf24', '#f87171']
 
 interface Props {
   byCategory: { name: string; value: number }[]
@@ -24,6 +25,7 @@ export function Summary({ byCategory, trend, formatAmount, theme }: Props) {
   const hasData = byCategory.length > 0
   const tooltipFormatter = (value: unknown) => formatAmount(Number(value) || 0)
   const isDark = theme === 'dark'
+  const palette = isDark ? DARK_COLORS : COLORS
   const tooltipStyle = isDark
     ? { backgroundColor: '#1e293b', border: '1px solid #334155', color: '#e2e8f0' }
     : undefined
@@ -39,7 +41,7 @@ export function Summary({ byCategory, trend, formatAmount, theme }: Props) {
             <PieChart>
               <Pie data={byCategory} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85}>
                 {byCategory.map((entry, index) => (
-                  <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={entry.name} fill={palette[index % palette.length]} />
                 ))}
               </Pie>
               <Tooltip formatter={tooltipFormatter} contentStyle={tooltipStyle} />
