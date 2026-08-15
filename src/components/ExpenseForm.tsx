@@ -29,9 +29,9 @@ export function ExpenseForm({ onAdd }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_1fr_1fr_2fr_auto] sm:items-end"
+      className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_1fr_1fr_2fr_auto] sm:items-end dark:border-slate-700 dark:bg-slate-900"
     >
-      <label className="grid gap-1 text-sm text-slate-600">
+      <label className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
         Importe
         <input
           value={amount}
@@ -39,28 +39,28 @@ export function ExpenseForm({ onAdd }: Props) {
           inputMode="decimal"
           placeholder="0,00"
           aria-label="Importe"
-          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900"
+          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-300"
         />
       </label>
 
-      <label className="grid gap-1 text-sm text-slate-600">
+      <label className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
         Fecha
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           aria-label="Fecha"
-          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900"
+          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-300 dark:[color-scheme:dark]"
         />
       </label>
 
-      <label className="grid gap-1 text-sm text-slate-600">
+      <label className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
         Categoría
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value as Category)}
           aria-label="Categoría"
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-slate-900"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-300"
         >
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
@@ -70,25 +70,25 @@ export function ExpenseForm({ onAdd }: Props) {
         </select>
       </label>
 
-      <label className="grid gap-1 text-sm text-slate-600">
+      <label className="grid gap-1 text-sm text-slate-600 dark:text-slate-300">
         Nota
         <input
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="Opcional"
           aria-label="Nota"
-          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900"
+          className="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none focus:border-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-300"
         />
       </label>
 
       <button
         type="submit"
-        className="h-[42px] rounded-lg bg-slate-900 px-5 font-medium text-white transition hover:bg-slate-700"
+        className="h-[42px] rounded-lg bg-slate-900 px-5 font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
       >
         Añadir
       </button>
 
-      {error && <p className="text-sm text-red-600 sm:col-span-5">{error}</p>}
+      {error && <p className="text-sm text-red-600 sm:col-span-5 dark:text-red-400">{error}</p>}
     </form>
   )
 }

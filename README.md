@@ -9,6 +9,7 @@ App web minimalista para registrar gastos **diarios, semanales y mensuales**. No
 - Total del periodo, desglose por categoría y evolución en gráficos.
 - Exportar a JSON o CSV e importar desde JSON (respaldo y migración entre dispositivos).
 - Selector de moneda (EUR, USD, MXN, GBP).
+- Modo claro / oscuro con botón en la cabecera (respeta la preferencia del sistema y se recuerda).
 
 ## Stack
 

@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mis gastos</title>
     <meta name="description" content="Registro minimalista de gastos diarios, semanales y mensuales" />
+    <script>
+      const stored = localStorage.getItem('gastos:theme')
+      const dark = stored
+        ? stored === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+      document.documentElement.classList.toggle('dark', dark)
+    </script>
   </head>
   <body>
     <div id="root"></div>
