@@ -3,6 +3,7 @@ import { ExpenseForm } from './components/ExpenseForm'
 import { ExpenseList } from './components/ExpenseList'
 import { Summary } from './components/Summary'
 import { useExpenses } from './hooks/useExpenses'
+import { useTheme } from './hooks/useTheme'
 import {
   formatPeriodLabel,
   isInPeriod,
@@ -37,6 +38,7 @@ export default function App() {
   const [period, setPeriod] = useState<Period>('day')
   const [reference, setReference] = useState(() => new Date())
   const [currency, setCurrency] = useState(() => loadCurrency())
+  const { theme, toggleTheme } = useTheme()
   const fileInput = useRef<HTMLInputElement>(null)
 
   const formatAmount = useMemo(() => {
@@ -89,11 +91,20 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-full bg-slate-50 text-slate-900">
+    <div className="min-h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="mx-auto flex max-w-4xl flex-col gap-6 px-4 py-8">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">Mis gastos</h1>
           <div className="flex items-center gap-2 text-sm">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
+              title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
             <select
               value={currency}
               onChange={(e) => {
@@ -101,7 +112,7 @@ export default function App() {
                 saveCurrency(e.target.value)
               }}
               aria-label="Moneda"
-              className="rounded-lg border border-slate-300 bg-white px-2 py-1.5"
+              className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 dark:border-slate-700 dark:bg-slate-900"
             >
               {CURRENCIES.map((c) => (
                 <option key={c} value={c}>
@@ -112,21 +123,21 @@ export default function App() {
             <button
               type="button"
               onClick={() => download('gastos.json', JSON.stringify(expenses, null, 2), 'application/json')}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
             >
               Exportar JSON
             </button>
             <button
               type="button"
               onClick={() => download('gastos.csv', toCSV(expenses), 'text/csv')}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
             >
               CSV
             </button>
             <button
               type="button"
               onClick={() => fileInput.current?.click()}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800"
             >
               Importar
             </button>
@@ -146,16 +157,18 @@ export default function App() {
 
         <ExpenseForm onAdd={addExpense} />
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-4">
+        <section className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex rounded-lg bg-slate-100 p-1">
+            <div className="flex rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
               {PERIODS.map(({ id, label }) => (
                 <button
                   key={id}
                   type="button"
                   onClick={() => setPeriod(id)}
                   className={`rounded-md px-3 py-1.5 text-sm transition ${
-                    period === id ? 'bg-white font-medium shadow-sm' : 'text-slate-500'
+                    period === id
+                      ? 'bg-white font-medium shadow-sm dark:bg-slate-700'
+                      : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
                   {label}
@@ -168,11 +181,11 @@ export default function App() {
                 type="button"
                 aria-label="Periodo anterior"
                 onClick={() => setReference((d) => shiftPeriod(d, period, -1))}
-                className="rounded-lg border border-slate-300 px-2.5 py-1 transition hover:bg-slate-100"
+                className="rounded-lg border border-slate-300 px-2.5 py-1 transition hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
               >
                 ‹
               </button>
-              <span className="min-w-48 text-center text-sm text-slate-600">
+              <span className="min-w-48 text-center text-sm text-slate-600 dark:text-slate-300">
                 {formatPeriodLabel(reference, period)}
               </span>
               <button
@@ -180,7 +193,7 @@ export default function App() {
                 aria-label="Periodo siguiente"
                 disabled={isCurrentPeriod}
                 onClick={() => setReference((d) => shiftPeriod(d, period, 1))}
-                className="rounded-lg border border-slate-300 px-2.5 py-1 transition hover:bg-slate-100 disabled:opacity-30"
+                className="rounded-lg border border-slate-300 px-2.5 py-1 transition hover:bg-slate-100 disabled:opacity-30 dark:border-slate-700 dark:hover:bg-slate-800"
               >
                 ›
               </button>
@@ -189,17 +202,17 @@ export default function App() {
 
           <div className="mt-4 flex items-baseline gap-3">
             <span className="text-3xl font-semibold tabular-nums">{formatAmount(total)}</span>
-            <span className="text-sm text-slate-500">
+            <span className="text-sm text-slate-500 dark:text-slate-400">
               {visible.length} {visible.length === 1 ? 'gasto' : 'gastos'}
             </span>
           </div>
         </section>
 
-        <Summary byCategory={byCategory} trend={trend} formatAmount={formatAmount} />
+        <Summary byCategory={byCategory} trend={trend} formatAmount={formatAmount} theme={theme} />
 
         <ExpenseList expenses={visible} formatAmount={formatAmount} onRemove={removeExpense} />
 
-        <footer className="pb-4 text-center text-xs text-slate-400">
+        <footer className="pb-4 text-center text-xs text-slate-400 dark:text-slate-500">
           Los datos se guardan sólo en este navegador (localStorage).
           {expenses.length > 0 &&
             ` Primer registro: ${parseISODate(
